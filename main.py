@@ -1,5 +1,6 @@
 from estruturas import Figurinha
-from colecoes import Album, Fila
+from album import Album  
+from filas import Fila   
 import persistencia
 
 def menu():
@@ -7,13 +8,13 @@ def menu():
     minhas_repetidas = Fila()
     historico_trocas = Fila()
     
-    # Carrega os dados usando o módulo de persistência
+    # Carrega os dados gravados para restaurar o módulo do sistema
     persistencia.carregar_do_arquivo(meu_album, minhas_repetidas)
 
     while True:
-        print("\n==================================")
+        print("\n====================================")
         print("  GERENCIADOR DE FIGURINHAS DA COPA  ")
-        print("==================================")
+        print("====================================")
         print("1. Inserir nova figurinha")
         print("2. Ver álbum completo")
         print("3. Ver porcentagem concluída")
@@ -23,19 +24,21 @@ def menu():
         print("7. Ver histórico de trocas")
         print("8. Remover figurinha do álbum")
         print("9. Sair (salvar automaticamente)")
-        print("==================================")
+        print("====================================")
         
         opcao = input("Escolha uma opção (1-9): ").strip()
 
         if opcao == "1":
             print("\n--- CADASTRAR FIGURINHA ---")
             try:
+                # Captura todas as entradas informadas pelo terminal
                 id_fig = int(input("Número (ID): "))
                 nome = input("Nome do Jogador: ").strip()
                 pais = input("Seleção (País): ").strip()
                 posicao = input("Posição (Ex: Goleiro): ").strip()
                 raridade = input("Raridade (Comum/Rara): ").strip()
                 
+                # Tratamento de erro: não permite chaves vazias nos dados principais
                 if not nome or not pais:
                     print("\n[ERRO] Nome e Seleção são obrigatórios!")
                     continue
@@ -53,6 +56,7 @@ def menu():
             meu_album.exibir_album()
 
         elif opcao == "3":
+            # Exibe o resultado do cálculo matemático feito no módulo Coleções
             print(f"\nProgresso atual: {meu_album.calcular_porcentagem()}% concluído.")
 
         elif opcao == "4":
@@ -85,6 +89,7 @@ def menu():
 
         elif opcao == "6":
             print("\n--- SIMULAR TROCA ---")
+            # Usa o método peek para verificar visualmente o primeiro elemento das repetidas
             oferecida = minhas_repetidas.peek()
             if oferecida is None:
                 print("Você não tem repetidas para trocar.")
@@ -97,13 +102,16 @@ def menu():
                 nome_t = input("Nome do jogador do amigo: ")
                 pais_t = input("Seleção do amigo: ")
                 
+                # Validação da troca: só aceita se você não possuir esse ID no álbum principal
                 if meu_album.buscar_por_id(id_t) is not None:
                     print("\n[RECUSADA] Você já tem essa figurinha no álbum.")
                 else:
+                    # Remove a sua figurinha repetida do início da fila
                     minhas_repetidas.dequeue()
                     nova_amigo = Figurinha(id_t, nome_t, pais_t, "Desconhecida", "Comum")
                     meu_album.adicionar(nova_amigo)
                     
+                    # Cria um registro de texto e salva na fila de históricos de trocas
                     texto_troca = Figurinha(0, f"Deu {oferecida.nome} e recebeu {nome_t}", "-", "-", "-")
                     historico_trocas.enqueue(texto_troca)
                     print(f"\n[SUCESSO] Troca realizada!")

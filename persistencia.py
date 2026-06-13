@@ -1,5 +1,7 @@
 from estruturas import Figurinha
-from album import Album, Fila  
+from album import Album  
+from filas import Fila   
+
 
 def salvar_no_arquivo(album, repetidas):
     # Abre (ou cria) o arquivo "meu_album.txt" no modo de escrita ('w')
