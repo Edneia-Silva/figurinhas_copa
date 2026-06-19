@@ -1,0 +1,9 @@
+ALBUM
+421,Alisson,Brasil,Goleiro,Comum
+422,Bento,Brasil,Goleiro,Comum
+423,Marquinhos,Brasil,Defensor,Comum
+433,Raphinha,Brasil,Atacante,Comum
+1,Lionel Messi,Argentina,Atacante,Rara
+5,Kylian Mbappé,França,Atacante,Rara
+7,Erling Haaland,Noruega,Atacante,Rara
+REPETIDAS
